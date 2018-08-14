@@ -1,0 +1,92 @@
+
+
+
+//LOOP 1.. the initial input of every subband
+
+
+
+i = 0
+j = 0
+threshold_vect_band_1=[]
+
+for i = 1 : 1 : x
+	if(index_vect_1[i+1] - index_vect_1[i] <= 32)
+		if( length(threshold_vect_band_1) == 0 )
+			threshold_vect_band_1 = [index_vect_1[i] index_vect_1[i+1] threshold_vect_band_1]
+			j = j + 1
+		end
+		else
+			threshold_vect_band_1 = [index_vect_1[i+1] threshold_vect_band_1]
+			j = j + 1		
+		end
+	end	
+	else
+		if(threshold_vect_band_1 [j] != 0)
+			threshold_vect_band_1 = [ 0 threshold_vect_band_1]
+			j = j + 1
+		end
+		
+		else
+			threshold_vect_band_1 = threshold_vect_band_1
+		end		
+	end
+end
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//LOOP 2.. break the different phonemes obtained from loop 1
+*****************
+
+i = 0
+k = find(~threshold_vect_band_1)
+for j = 0:length(k)
+         newvect=[]
+	     newvect=threshold_vect_band_1(:,i,k[i])
+	     newfunc(newvect)
+		 i=i+k[i]
+	
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// LOOP 3.. the input to ANN
+****************************
+
+i = 1
+low = 0;
+high = 0;
+low_thresh = 0;     
+high_thresh = 0;
+append = []
+stack = java.util.Stack();
+for i = 1 : 1 : x
+	for j = 1 : 1 : 32
+
+		if(i > 1)
+			if( threshold_vect_band1[i] > low  && threshold_vect_band1[i] < low_thresh)
+				low_thresh = threshold_vect_band1[i];		
+			end
+		end
+		
+		else
+			if( threshold_vect_band1[i] > low)
+				low_thresh = threshold_vect_band1[i];		
+			end
+		end
+
+		if(i > 1)
+			if( threshold_vect_band1[i] < high  && threshold_vect_band1[i] > high_thresh)
+				high_thresh = threshold_vect_band1[i];		
+			end
+		end
+		
+		else
+			if( threshold_vect_band1[i] < high)
+				high_thresh = threshold_vect_band1[i];		
+			end
+		end
+	append = [low_thresh, high_thresh]
+	end
+stack.push(append)
+ends
+
+
+
+// the newfunc function from the second loop gives the phonemes which are sent to the ANN along with the low and high thresholds of a subbed from loop 3

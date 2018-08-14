@@ -1,0 +1,133 @@
+
+
+data and fs are loaded
+
+// Normalizing the data
+
+Data = normc(data)
+
+// Finding the approximate coefficients of the subbands after decomposing the signal into 6 levels
+
+[ca1,cd1] = wavedec(ndata,1,'sym4')
+[ca2,cd2] = wavedec(ndata,2,'sym4')
+[ca3,cd3] = wavedec(ndata,3,'sym4')
+[ca4,cd4] = wavedec(ndata,4,'sym4')
+[ca5,cd5] = wavedec(ndata,5,'sym4')
+[ca6,cd6] = wavedec(ndata,6,'sym4')
+approx1 = appcoef(ca1,cd1,'sym4')
+approx2 = appcoef(ca2,cd2,'sym4')
+approx3 = appcoef(ca3,cd3,'sym4')
+approx4 = appcoef(ca4,cd4,'sym4')
+approx5 = appcoef(ca5,cd5,'sym4')
+approx6 = appcoef(ca6,cd6,'sym4')
+
+
+//Next comes the power calculation for each subbing
+
+
+power1 = approx1.^2
+power2 = approx2.^2
+power3 = approx3.^2
+power4 = approx4.^2
+power5 = approx5.^2
+power6 = approx6.^2
+ 
+
+//calculate the sum of powers in the 6 subbands
+
+sumpow1 = sum(power1)
+sumpow2 = sum(power2)
+sumpow3 = sum(power3)
+sumpow4 = sum(power4)
+sumpow5 = sum(power5)
+sumpow6 = sum(power6)
+
+
+/*
+
+Next,
+calculate envelope with window size for each subband as suggested in the paper.
+
+Loop for calculating envelope vector
+
+*/
+
+i=1
+envelopow6 = []
+max1 = []
+for i=1 : 9 : 6th-level-sample-count
+   	for j=i:1:(i+9)
+        max1 = [max1 power6(i)]
+    end
+    envelopow6 = [envelopow6 max(max1)]
+    max1=[]
+end 
+i=1
+envelopow5 = []
+max1 = []
+for i=1 : 7 : 5th-level-sample-count
+   	for j=i:1:(i+7)
+        max1 = [max1 power5(i)]
+    end
+    envelopow5 = [envelopow5 max(max1)]
+    max1=[]
+end 
+i=1
+envelopow4 = []
+max1 = []
+for i=1 : 5 : 4th-level-sample-count
+   	for j=i:1:(i+5)
+        max1 = [max1 power4(i)]
+    end
+    envelopow4 = [envelopow4 max(max1)]
+    max1=[]
+end 
+i=1
+envelopow3 = []
+max1 = []
+for i=1 : 3 : 3rd-level-sample-count
+   	for j=i:1:(i+3)
+        max1 = [max1 power3(i)]
+    end
+    envelopow3 = [envelopow3 max(max1)]
+    max1=[]
+end 
+i=1
+envelopow2 = []
+max1 = []
+for i=1 : 3 : 2nd-level-sample-count
+   	for j=i:1:(i+3)
+        max1 = [max1 power2(i)]
+    end
+    envelopow2 = [envelopow2 max(max1)]
+    max1=[]
+end 
+i=1
+envelopow1 = []
+max1 = []
+for i=1 : 3 : 1st-level-sample-count
+   	for j=i:1:(i+3)
+        max1 = [max1 power1(i)]
+    end
+    envelopow1 = [envelopow1 max(max1)]
+    max1=[]
+end 
+
+
+// diff(envelopown)
+
+	
+	diffenvpow1 = diff(envelopow1)
+	diffenvpow2 = diff(envelopow2)
+	diffenvpow3 = diff(envelopow3)
+	diffenvpow4 = diff(envelopow4)
+	diffenvpow5 = diff(envelopow5)
+	diffenvpow6 = diff(envelopow6)
+
+
+// Loops
+
+
+
+
+

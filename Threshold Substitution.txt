@@ -1,0 +1,18 @@
+
+i=1
+index_vect1_5=[]	
+for i = 1:1:1
+	if abs(conv_difp_1(i) - abs(envelopow6(i))) < value-to-be-substituted
+		if (abs(abs(conv_difp_1(i + 1))- envelopow6(i + 1)) > value-to-be-substituted)
+			index_vect1_5=[index_vect1_5 i]
+		end
+	end
+end
+for i = 2 : 1 : 115
+	if abs(conv_difp_1(i) - abs(envelopow6(i))) < value-to-be-substituted
+		if (abs(abs(conv_difp_1(i + 1))- envelopow6(i + 1)) > value-to-be-substituted || (abs(abs(conv_difp_1(i-1))-envelopow6(i-1)))> value-to-be-substituted)
+			index_vect1_5=[index_vect1_5 i]
+		end
+	end
+end
+
